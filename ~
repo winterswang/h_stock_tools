@@ -1,0 +1,23 @@
+api:
+  backoff_factor: 0.3
+  max_retries: 3
+  timeout: 180
+  user_agent: null
+cache:
+  cache_dir: ./cache
+  cache_ttl_hours: 24
+  enable_cache: true
+download:
+  chunk_size: 8192
+  download_dir: ./downloads
+  max_concurrent: 5
+  organize_by_company: true
+  pdf_only: true
+  timeout: 120
+logging:
+  backup_count: 5
+  console_output: true
+  log_dir: ./logs
+  log_file: hkex_downloader.log
+  log_level: INFO
+  max_file_size: 10MB

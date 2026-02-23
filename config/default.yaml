@@ -1,0 +1,32 @@
+# 港交所文档下载工具配置文件
+
+# API配置
+api:
+  timeout: 30                    # 请求超时时间（秒）
+  max_retries: 3                 # 最大重试次数
+  backoff_factor: 0.3            # 重试间隔因子
+  user_agent: null               # 自定义User-Agent，null表示使用默认值
+
+# 下载配置
+download:
+  download_dir: "./downloads"     # 下载目录
+  max_concurrent: 5              # 最大并发下载数
+  chunk_size: 8192               # 下载块大小（字节）
+  timeout: 60                    # 下载超时时间（秒）
+  pdf_only: true                 # 是否只下载PDF文档
+  organize_by_company: true      # 是否按公司组织文件夹
+
+# 缓存配置
+cache:
+  cache_dir: "./cache"           # 缓存目录
+  cache_ttl_hours: 24            # 缓存有效期（小时）
+  enable_cache: true             # 是否启用缓存
+
+# 日志配置
+logging:
+  log_level: "INFO"              # 日志级别 (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  log_dir: "./logs"              # 日志目录
+  log_file: "hkex_downloader.log" # 日志文件名
+  max_file_size: "10MB"          # 单个日志文件最大大小
+  backup_count: 5                # 日志文件备份数量
+  console_output: true           # 是否输出到控制台
