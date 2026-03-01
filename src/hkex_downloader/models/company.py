@@ -7,7 +7,7 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 
 class Company(BaseModel):
@@ -20,7 +20,7 @@ class Company(BaseModel):
     stock_name: str = Field(..., description="公司名称")
     market: str = Field(default="SEHK", description="市场代码")
 
-    @validator("stock_code")
+    @field_validator("stock_code")
     def validate_stock_code(cls, v: str) -> str:
         if not v or len(v) != 5:
             raise ValueError('股票代码必须是5位数字，如 "00700"')
@@ -28,8 +28,7 @@ class Company(BaseModel):
             raise ValueError("股票代码必须是数字")
         return v
 
-    class Config:
-        json_encoders = {datetime: lambda v: v.isoformat()}
+    model_config = ConfigDict(json_encoders={datetime: lambda v: v.isoformat()})
 
 
 class Document(BaseModel):
@@ -102,8 +101,7 @@ class Document(BaseModel):
 
         return None
 
-    class Config:
-        json_encoders = {datetime: lambda v: v.isoformat()}
+    model_config = ConfigDict(json_encoders={datetime: lambda v: v.isoformat()})
 
 
 class DocumentType:

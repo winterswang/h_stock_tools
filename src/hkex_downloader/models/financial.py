@@ -10,7 +10,7 @@ from datetime import datetime
 from typing import Dict, List, Optional, Union, Any
 from enum import Enum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class ReportType(str, Enum):
@@ -39,8 +39,7 @@ class FinancialData(BaseModel):
     data: Dict[str, Union[float, str, None]] = Field(..., description="财务数据")
     created_at: datetime = Field(default_factory=datetime.now, description="创建时间")
 
-    class Config:
-        use_enum_values = True
+    model_config = ConfigDict(use_enum_values=True)
 
 
 class BalanceSheetData(FinancialData):
@@ -182,8 +181,7 @@ class FinancialDataCollection(BaseModel):
     raw_dataframe: Optional[Any] = Field(None, description="原始DataFrame数据")
     created_at: datetime = Field(default_factory=datetime.now, description="创建时间")
     
-    class Config:
-        arbitrary_types_allowed = True  # 允许任意类型，支持DataFrame
+    model_config = ConfigDict(arbitrary_types_allowed=True)
     
     def add_data(self, data: FinancialData):
         """添加财务数据"""
@@ -218,8 +216,7 @@ class FinancialDataRequest(BaseModel):
     end_date: Optional[str] = Field(None, description="结束日期 YYYY-MM-DD")
     limit: Optional[int] = Field(default=10, description="返回数据条数限制")
     
-    class Config:
-        use_enum_values = True
+    model_config = ConfigDict(use_enum_values=True)
 
 
 class FinancialDataResponse(BaseModel):
@@ -229,5 +226,4 @@ class FinancialDataResponse(BaseModel):
     data: Optional[FinancialDataCollection] = Field(None, description="财务数据")
     total_count: int = Field(default=0, description="总数据条数")
     
-    class Config:
-        use_enum_values = True
+    model_config = ConfigDict(use_enum_values=True)

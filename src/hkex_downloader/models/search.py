@@ -7,7 +7,7 @@
 from datetime import date, datetime
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator, ValidationInfo
 
 from ..utils.logger import get_logger
 from .company import Document
@@ -43,7 +43,7 @@ class SearchRequest(BaseModel):
     row_range: int = Field(default=200, description="返回记录数")
     lang: str = Field(default="zh", description="语言")
 
-    @validator("from_date", "to_date")
+    @field_validator("from_date", "to_date")
     def validate_dates(cls, v: Union[date, str]) -> date:
         if isinstance(v, str):
             try:
@@ -52,9 +52,9 @@ class SearchRequest(BaseModel):
                 raise ValueError("日期格式必须是 YYYYMMDD")
         return v
 
-    @validator("to_date")
-    def validate_date_range(cls, v: date, values: Dict[str, Any]) -> date:
-        if "from_date" in values and v < values["from_date"]:
+    @field_validator("to_date")
+    def validate_date_range(cls, v: date, info: ValidationInfo) -> date:
+        if "from_date" in info.data and v < info.data["from_date"]:
             raise ValueError("结束日期不能早于开始日期")
         return v
 
